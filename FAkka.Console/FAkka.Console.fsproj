@@ -9,4 +9,10 @@
     <Compile Include="Program.fs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FAkka.Domain\FAkka.Domain.fsproj" />
+    <ProjectReference Include="..\FAkka.Service\FAkka.Service.fsproj" />
+    <ProjectReference Include="..\FAkka.Datasource\FAkka.Datasource.fsproj" />
+  </ItemGroup>
+
 </Project>
