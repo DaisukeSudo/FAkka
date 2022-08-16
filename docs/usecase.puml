@@ -1,0 +1,53 @@
+@startuml "usecase"
+left to right direction
+skinparam actorStyle awesome
+
+"管理者" as Administrator
+"主催者" as Organizer
+"利用者" as User
+
+package "管理者アカウント" as AdministratorAccount {
+  usecase "ログイン" as LoginAdministrator
+
+  Administrator --> LoginAdministrator
+}
+
+package "主催者アカウント" as OrganizerAccount {
+  usecase "登録／編集／削除／検索" as ManageOrganizer
+  usecase "ログイン" as LoginOrganizer
+
+  Administrator --> ManageOrganizer
+  Organizer --> LoginOrganizer
+}
+
+package "利用者アカウント" as UserAccount {
+  usecase "登録／編集／削除" as ManageUser
+  usecase "ログイン" as LoginUser
+
+  User --> ManageUser
+  User --> LoginUser
+}
+
+package "チケット" as Ticket {
+  usecase "登録／編集／削除／検索" as ManageTicket
+  usecase "在庫編集" as ManageTicketStock
+  usecase "検索" as SearchTicket
+  usecase "購入" as PurchaseTicket
+
+  Organizer --> ManageTicket
+  Organizer --> ManageTicketStock
+  User --> SearchTicket
+  User --> PurchaseTicket
+}
+
+package "購入済チケット" as PurchasedTicket {
+  usecase "検索" as SearchPurchasedTicket
+  usecase "提示" as PresentPurchasedTicket
+  usecase "もぎり" as ConsumePurchasedTicket
+
+  User --> SearchPurchasedTicket
+  User --> PresentPurchasedTicket
+  Organizer --> ConsumePurchasedTicket
+}
+
+@enduml
