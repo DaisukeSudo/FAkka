@@ -1,23 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="Library.fs" />
+    <Compile Include="HelloAkka.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\FAkka.Domain\FAkka.Domain.fsproj" />
     <ProjectReference Include="..\FAkka.Service\FAkka.Service.fsproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Akka" Version="1.4.40" />
     <PackageReference Include="Akka.FSharp" Version="1.4.40" />
     <PackageReference Include="Akka.Remote" Version="1.4.40" />
   </ItemGroup>
-
 </Project>
