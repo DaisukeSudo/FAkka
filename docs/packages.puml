@@ -1,0 +1,132 @@
+@startuml "packages"
+
+package "Domain" as pkg_domain {
+
+  package "Organizer" as pkg_domain_organizer {
+
+    class Organizer {
+      + OrganizerId
+      + OrganizerName
+    }
+  }
+
+  package "User" as pkg_domain_user {
+
+    class User {
+      + UserId
+      + UserName
+    }
+  }
+
+  package "Ticket" as pkg_domain_ticket {
+
+    class Ticket {
+      + TicketId
+      + TicketName
+      + Description
+      + ExpirationDate
+      + OrganizerId
+    }
+
+    class TicketType {
+      + TicketTypeId
+      + TicketTypeName
+      + Price
+    }
+
+    Ticket "1" *--> "1.*" TicketType
+    Organizer <.. Ticket
+  }
+
+  package "TicketStock" as pkg_domain_ticket_stock {
+
+    class TicketStock {
+      + TicketId
+      + SalesQuantity
+      + RemainingQuantity()
+    }
+
+    class TradedTicketList {
+      + List<TradedTicketId>
+    }
+
+    TicketStock "1" *--> "1" TradedTicketList
+    Ticket <... TicketStock
+  }
+
+  package "PurchasedTicket" as pkg_domain_purchased_ticket {
+
+    class PurchasedTicket {
+      + TradedTicketId
+      + TicketId
+      + UserId
+    }
+
+    class PurchasedTicketQuantity {
+      + TicketTypeId
+    }
+
+    enum PurchasedTicketStatus {
+      + Unused
+      + Used
+    }
+
+    PurchasedTicket "1" *--> "1..*" PurchasedTicketQuantity
+    PurchasedTicket "1" *--> "1"    PurchasedTicketStatus
+    Ticket <... PurchasedTicket
+    User   <... PurchasedTicket
+  }
+}
+
+package "Service" as pkg_service {
+
+  package "Command" as pkg_service_command {
+
+    package "Ticket" as pkg_service_command_ticket {
+
+      class TicketManageService {
+        + create()
+        + update()
+        + delete()
+      }
+
+      class TicketPurchaseService {
+        + purchase(TicketId, UserId)
+      }
+
+      TicketManageService    ---> Ticket
+      TicketPurchaseService  ---> TicketStock
+      TicketPurchaseService  ---> PurchasedTicket
+    }
+
+    package "TicketStock" as pkg_service_command_ticket_stock {
+
+      class TicketStockManageService {
+        + update()
+      }
+
+      TicketStockManageService ---> TicketStock
+    }
+  }
+
+  package "Query" as pkg_service_query {
+
+    package "Ticket" as pkg_service_query_ticket {
+
+      class TicketReferenceService {
+        + findList()
+        + findOneById()
+      }
+    }
+
+    package "PurchasedTicket" as pkg_service_query_purchased_ticket {
+
+      class PurchasedTicketReferenceService {
+        + findListByUserId()
+        + findOneByUserId()
+      }
+    }
+  }
+}
+
+@enduml
